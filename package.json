@@ -1,0 +1,24 @@
+{
+  "name": "domus",
+  "version": "0.0.1",
+  "description": "Sistema para cadastro de familias idealizado para uso pela pastoral familiar da Paroquia Nossa Senhora do Rosario em Aracati-CE",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victorviana3/domus.git"
+  },
+  "author": "Victor Viana",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/victorviana3/domus/issues"
+  },
+  "homepage": "https://github.com/victorviana3/domus#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "sqlite3": "^5.1.7"
+  }
+}
