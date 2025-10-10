@@ -12,5 +12,7 @@ const Familia = Database.define("familia", {
     allowNull: false,
     primaryKey: true,
   },
-  pessoa_referencia: {},
+  pessoa_referencia: {
+    id:
+  },
 });
