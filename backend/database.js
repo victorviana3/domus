@@ -22,3 +22,16 @@ export const Familia = sequelize.define("familia", {
     allowNull: true,
   },
 });
+
+export const Especificidade = sequelize.define("especificidade", {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true,
+  },
+  tipo: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+});

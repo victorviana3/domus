@@ -2,7 +2,7 @@ import express from "express";
 const app = express();
 const port = 3000;
 import cors from "cors";
-import { sequelize, Familia } from "./database.js";
+import { sequelize, Familia, Especificidade } from "./database.js";
 
 app.use(cors());
 app.use(express.json());
@@ -30,6 +30,30 @@ app.post("/familia", async (req, res) => {
     res
       .status(500)
       .json({ message: "Erro ao cadastrar a familia", error: error.message });
+  }
+});
+
+app.get("/especificidades", async (req, res) => {
+  const especificidades = await Especificidade.findAll();
+  res.status(200).json(especificidades);
+});
+
+app.post("/especificidade", async (req, res) => {
+  if (!req.body.tipo) {
+    res.status(400).json({ message: "Campo tipo inválido" });
+    return;
+  }
+  try {
+    const novaEspecificidade = await Especificidade.create(req.body);
+    res.status(201).json({
+      message: "Especificidade criada com sucesso",
+      data: novaEspecificidade,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Erro no cadastro de especificidade",
+      error: error.message,
+    });
   }
 });
 
