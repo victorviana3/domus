@@ -1,18 +1,24 @@
-import sqlite3 from "sqlite3";
-const Sequelize = require("sequelize");
-const sequelize = new Sequelize({
+import Sequelize from "sequelize";
+export const sequelize = new Sequelize({
   dialect: "sqlite",
   storage: "./domus.db",
 });
 
-const Familia = Database.define("familia", {
+export const Familia = sequelize.define("familia", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true,
   },
-  pessoa_referencia: {
-    id:
+  nome: {
+    type: Sequelize.STRING,
+  },
+  endereco: {
+    type: Sequelize.STRING,
+  },
+  especificidade: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
   },
 });

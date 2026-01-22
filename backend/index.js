@@ -1,28 +1,36 @@
-const express = require("express");
+import express from "express";
 const app = express();
 const port = 3000;
-const cors = require("cors");
+import cors from "cors";
+import { sequelize, Familia } from "./database.js";
 
 app.use(cors());
 app.use(express.json());
+
+await sequelize.sync();
 
 app.get("/ping", (req, res) => {
   res.send("pong");
 });
 
-const familiasCadastradas = [];
-
-app.get("/familias", (req, res) => {
-  res.status(200).json(familiasCadastradas);
+app.get("/familias", async (req, res) => {
+  const familias = await Familia.findAll();
+  res.status(200).json(familias);
 });
 
-app.post("/familia", (req, res) => {
+app.post("/familia", async (req, res) => {
   console.log(req.body);
-  const novaFamilia = req.body;
-  familiasCadastradas.push(novaFamilia);
-  res
-    .status(201)
-    .json({ message: "Familia cadastrada com sucesso", data: novaFamilia });
+  try {
+    const novaFamilia = await Familia.create(req.body);
+    res
+      .status(201)
+      .json({ message: "Familia cadastrada com sucesso", data: novaFamilia });
+  } catch (error) {
+    console.error("Erro ao cadastrar a familia", error);
+    res
+      .status(500)
+      .json({ message: "Erro ao cadastrar a familia", error: error.message });
+  }
 });
 
 app.listen(port, () => {
