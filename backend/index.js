@@ -7,7 +7,7 @@ import { sequelize, Familia, Especificidade } from "./database.js";
 app.use(cors());
 app.use(express.json());
 
-await sequelize.sync();
+await sequelize.sync({ alter: true });
 
 app.get("/ping", (req, res) => {
   res.send("pong");
