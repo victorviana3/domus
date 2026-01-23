@@ -67,7 +67,11 @@ export const tipoEvento = sequelize.define(
   },
 );
 
-Evento.belongsTo(tipoEvento);
+Evento.belongsTo(tipoEvento, {
+  foreignKey: {
+    allowNull: false,
+  },
+});
 
 export const Pessoa = sequelize.define("pessoa", {
   id: {
@@ -78,6 +82,7 @@ export const Pessoa = sequelize.define("pessoa", {
   },
   nome: {
     type: Sequelize.STRING(100),
+    allowNull: false,
   },
   data_nascimento: {
     type: Sequelize.DATEONLY,
@@ -92,7 +97,11 @@ export const Pessoa = sequelize.define("pessoa", {
   },
 });
 
-Pessoa.belongsTo(Familia);
+Pessoa.belongsTo(Familia, {
+  foreignKey: {
+    allowNull: false,
+  },
+});
 
 export const Participacao = sequelize.define(
   "participacao",
