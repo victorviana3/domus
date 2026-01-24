@@ -166,6 +166,22 @@ app.get("/eventos/:id/participantes", async (req, res) => {
   }
 });
 
+app.delete("/participacao/:id", async (req, res) => {
+  try {
+    await Participacao.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({
+      message: "Erro ao deletar",
+      error: error.message,
+    });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Domus listening on port ${port}`);
 });
