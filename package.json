@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Sistema para cadastro de familias idealizado para uso pela pastoral familiar da Paroquia Nossa Senhora do Rosario em Aracati-CE",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

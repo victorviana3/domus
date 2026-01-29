@@ -1,26 +1,26 @@
-# Planejamento do Projeto Domus
+# TODO - Domus
 
-## 1. Modelagem & Associações (Sequelize)
-### Passo Imediato: Famílias e Especificidades
-- [ ] **Ajustar Modelos Atuais**:
-  - Remover campo `especificidade` (int) direto da tabela `Familia`.
-  - Criar tabela de junção (ex: `FamiliaEspecificidade`) para relacionamento N:N (Muitos-para-Muitos).
-  - Definir associações no Sequelize (`belongsToMany`).
+## Backend
+- [ ] **Participação (Prioridade Alta)**
+    - [ ] Criar rota `POST /participacao` para vincular pessoa a evento.
+    - [ ] Criar rota `GET /eventos/:id/participantes` para listar quem foi em um evento.
+    - [ ] Criar rota `DELETE /participacao` para remover uma presença.
 
-### Tabelas de Apoio (Support Tables)
-- [ ] **Criar `TipoEvento`**: Portar tabela `tipo_eventos` do SQL para model Sequelize.
-- [ ] **Outros Domínios**: Analisar necessidade de tabelas para Status ou Categorias adicionais.
+- [ ] **Melhoria nas Consultas (Eager Loading)**
+    - [ ] Atualizar `GET /familias` para incluir dados da `Especificidade`.
+    - [ ] Atualizar `GET /pessoas` para incluir dados da `Familia`.
+    - [ ] Atualizar `GET /eventos` para incluir o `TipoEvento`.
 
-### Tabelas Principais (Main Tables)
-- [ ] **Criar `Pessoa`**:
-  - Campos: nome, data_nascimento, contato, eh_responsavel.
-  - Associação: `belongsTo(Familia)`.
-- [ ] **Criar `Evento`**:
-  - Campos: nome, data_evento, endereco.
-  - Associação: `belongsTo(TipoEvento)`.
-- [ ] **Criar `Participacao`**:
-  - Relacionamento N:N entre `Evento` e `Pessoa`.
+- [ ] **CRUD Completo**
+    - [ ] Implementar rotas `GET /:entidade/:id` (Busca por ID) para Família, Pessoa e Evento.
+    - [ ] Implementar rotas `PUT /:entidade/:id` (Atualização) para todas as entidades.
+    - [ ] Implementar rotas `DELETE /:entidade/:id` para todas as entidades.
 
-## 2. Backend (API)
-- [ ] Criar script de inicialização (`sync`) para gerar o banco `domus.db`.
-- [ ] Criar rotas CRUD básicas.
+- [ ] **Refatoração & Qualidade**
+    - [ ] Corrigir nome da chave estrangeira `familiumId` para `familiaId` no `POST /pessoa` e no modelo.
+    - [ ] Adicionar validações de integridade mais robustas nos controllers.
+
+## Frontend
+- [ ] Criar tela de gerenciamento de Participações (Vincular pessoas a eventos).
+- [ ] Exibir detalhes das relações (ex: mostrar Família na lista de Pessoas).
+- [ ] Implementar botões de Editar e Excluir nas listagens.
