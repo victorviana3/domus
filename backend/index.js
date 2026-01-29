@@ -182,6 +182,47 @@ app.delete("/participacao/:id", async (req, res) => {
   }
 });
 
+app.get("/:entidade/:id", async (req, res) => {
+  const entidade = ["familia", "pessoa", "evento"];
+  if (!entidade.includes(req.params.entidade) || !req.params.id) {
+    res.status(400).json({ message: "Request Inválido" });
+    return;
+  }
+  switch (req.params.entidade) {
+    case "familia":
+      try {
+        const familia = await Familia.findOne({ where: { id: req.params.id } });
+        res.status(200).json(familia);
+      } catch (error) {
+        generalError(error, res);
+      }
+      break;
+    case "pessoa":
+      try {
+        const pessoa = await Pessoa.findOne({ where: { id: req.params.id } });
+        res.status(200).json(pessoa);
+      } catch (error) {
+        generalError(error, res);
+      }
+      break;
+    case "evento":
+      try {
+        const evento = await Evento.findOne({ where: { id: req.params.id } });
+        res.status(200).json(evento);
+      } catch (error) {
+        generalError(error, res);
+      }
+      break;
+  }
+});
+
 app.listen(port, () => {
   console.log(`Domus listening on port ${port}`);
 });
+
+function generalError(error, res) {
+  res.status(500).json({
+    message: "Erro interno do servidor",
+    error: error.message,
+  });
+}
