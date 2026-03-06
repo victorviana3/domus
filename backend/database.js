@@ -98,9 +98,8 @@ export const Pessoa = sequelize.define("pessoa", {
 });
 
 Pessoa.belongsTo(Familia, {
-  foreignKey: {
-    allowNull: false,
-  },
+  foreignKey: "familiaId",
+  allowNull: false,
 });
 
 export const Participacao = sequelize.define(

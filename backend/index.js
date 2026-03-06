@@ -18,7 +18,7 @@ app.use(express.json());
 await sequelize.sync();
 
 app.get("/familias", async (req, res) => {
-  const familias = await Familia.findAll();
+  const familias = await Familia.findAll({ include: [Especificidade] });
   res.status(200).json(familias);
 });
 
@@ -62,7 +62,7 @@ app.post("/especificidade", async (req, res) => {
 });
 
 app.post("/pessoa", async (req, res) => {
-  if (!req.body.nome || !req.body.familiumId) {
+  if (!req.body.nome || !req.body.familiaId) {
     res.status(400).json({ message: "Request inválido" });
     return;
   }
@@ -81,12 +81,12 @@ app.post("/pessoa", async (req, res) => {
 });
 
 app.get("/pessoas", async (req, res) => {
-  const pessoas = await Pessoa.findAll();
+  const pessoas = await Pessoa.findAll({ include: [Familia] });
   res.status(200).json(pessoas);
 });
 
 app.get("/eventos", async (req, res) => {
-  const eventos = await Evento.findAll();
+  const eventos = await Evento.findAll({ include: [tipoEvento] });
   res.status(200).json(eventos);
 });
 
@@ -183,36 +183,85 @@ app.delete("/participacao/:id", async (req, res) => {
 });
 
 app.get("/:entidade/:id", async (req, res) => {
-  const entidade = ["familia", "pessoa", "evento"];
+  const entidade = ["familia", "pessoa", "evento", "especificidade", "tipoevento"];
   if (!entidade.includes(req.params.entidade) || !req.params.id) {
     res.status(400).json({ message: "Request Inválido" });
     return;
   }
+  let model;
   switch (req.params.entidade) {
-    case "familia":
-      try {
-        const familia = await Familia.findOne({ where: { id: req.params.id } });
-        res.status(200).json(familia);
-      } catch (error) {
-        generalError(error, res);
-      }
-      break;
-    case "pessoa":
-      try {
-        const pessoa = await Pessoa.findOne({ where: { id: req.params.id } });
-        res.status(200).json(pessoa);
-      } catch (error) {
-        generalError(error, res);
-      }
-      break;
-    case "evento":
-      try {
-        const evento = await Evento.findOne({ where: { id: req.params.id } });
-        res.status(200).json(evento);
-      } catch (error) {
-        generalError(error, res);
-      }
-      break;
+    case "familia": model = Familia; break;
+    case "pessoa": model = Pessoa; break;
+    case "evento": model = Evento; break;
+    case "especificidade": model = Especificidade; break;
+    case "tipoevento": model = tipoEvento; break;
+  }
+
+  try {
+    const registro = await model.findByPk(req.params.id);
+    if (!registro) {
+      return res.status(404).json({ message: "Registro não encontrado" });
+    }
+    res.status(200).json(registro);
+  } catch (error) {
+    generalError(error, res);
+  }
+});
+
+app.put("/:entidade/:id", async (req, res) => {
+  const entidade = ["familia", "pessoa", "evento", "especificidade", "tipoevento"];
+  if (!entidade.includes(req.params.entidade) || !req.params.id) {
+    res.status(400).json({ message: "Request Inválido" });
+    return;
+  }
+  let model;
+  switch (req.params.entidade) {
+    case "familia": model = Familia; break;
+    case "pessoa": model = Pessoa; break;
+    case "evento": model = Evento; break;
+    case "especificidade": model = Especificidade; break;
+    case "tipoevento": model = tipoEvento; break;
+  }
+
+  try {
+    const [atualizado] = await model.update(req.body, {
+      where: { id: req.params.id }
+    });
+    if (atualizado) {
+      const registroAtualizado = await model.findByPk(req.params.id);
+      return res.status(200).json({ message: "Registro atualizado", data: registroAtualizado });
+    }
+    res.status(404).json({ message: "Registro não encontrado" });
+  } catch (error) {
+    generalError(error, res);
+  }
+});
+
+app.delete("/:entidade/:id", async (req, res) => {
+  const entidade = ["familia", "pessoa", "evento", "especificidade", "tipoevento"];
+  if (!entidade.includes(req.params.entidade) || !req.params.id) {
+    res.status(400).json({ message: "Request Inválido" });
+    return;
+  }
+  let model;
+  switch (req.params.entidade) {
+    case "familia": model = Familia; break;
+    case "pessoa": model = Pessoa; break;
+    case "evento": model = Evento; break;
+    case "especificidade": model = Especificidade; break;
+    case "tipoevento": model = tipoEvento; break;
+  }
+
+  try {
+    const deletado = await model.destroy({
+      where: { id: req.params.id }
+    });
+    if (deletado) {
+      return res.status(204).send();
+    }
+    res.status(404).json({ message: "Registro não encontrado" });
+  } catch (error) {
+    generalError(error, res);
   }
 });
 
