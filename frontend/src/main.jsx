@@ -6,11 +6,16 @@ import App from "./App.jsx";
 import { NotFoundPage } from "./components/NotFoundPage.jsx";
 import { Familias } from "./components/Familias.jsx";
 import { Pessoas } from "./components/Pessoas.jsx";
+import { AdicionarFamilia } from "./components/AdicionarFamilia.jsx";
 
 const router = createBrowserRouter([
   { path: "/", element: <App /> },
   { path: "/familias", element: <App component={<Familias />} /> },
   { path: "/pessoas", element: <App component={<Pessoas />} /> },
+  {
+    path: "/adicionar/familia",
+    element: <App component={<AdicionarFamilia />} />,
+  },
   { path: "*", element: <NotFoundPage /> },
 ]);
 
