@@ -1,20 +1,23 @@
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import "./Header.css";
+import Logo from "../assets/logo.png";
+import LogoPastoral from "../assets/pastoral-familiar-brasil-seeklogo.png";
 
 export default function Header() {
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container>
-        <Navbar.Brand href="#home">DOMUS</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-          </Nav>
-          <Nav className="me-auto">
-            <Nav.Link href="#familias">Familias</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+    <div className="div-header">
+      <img src={Logo} height="40px"></img>
+      <ul>
+        <li>Início</li>
+        <Link to="/familias">
+          <li>Familias</li>
+        </Link>
+        <Link to="/pessoas">
+          <li>Pessoas</li>
+        </Link>
+        <li>Eventos</li>
+      </ul>
+      <img src={LogoPastoral} height="40px" />
+    </div>
   );
 }
