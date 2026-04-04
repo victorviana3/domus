@@ -24,6 +24,7 @@ export function AdicionarFamilia() {
 
     fetch("http://localhost:3000/familia", {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     }).then((res) => console.log(res));
   }
@@ -44,6 +45,15 @@ export function AdicionarFamilia() {
           placeholder="Insira o endereço da familia"
           required
         />
+        <Form.Label className="mt-3">Especificidade Familiar</Form.Label>
+        <Form.Select name="especificidade">
+          <option value="null">Nenhuma</option>
+          {especificidades.map((especificidade) => {
+            return (
+              <option value={especificidade.id}>{especificidade.tipo}</option>
+            );
+          })}
+        </Form.Select>
       </Form.Group>
       <Button variant="primary" type="submit">
         Cadastrar
@@ -57,11 +67,11 @@ export function AdicionarFamilia() {
     //       value={especificidadeId}
     //       onChange={(e) => setEspecificidadeId(e.target.value)}
     //     >
-    //       {especificidades.map((especificidade) => {
-    //         return (
-    //           <option value={especificidade.id}>{especificidade.tipo}</option>
-    //         );
-    //       })}
+    //   {especificidades.map((especificidade) => {
+    //     return (
+    //       <option value={especificidade.id}>{especificidade.tipo}</option>
+    //     );
+    //   })}
     //     </select>
     //   </form>
     // </div>
