@@ -1,11 +1,9 @@
-import { useState } from "react";
-import "./App.css";
-import { Familias } from "./components/Familias";
+// import "./App.css";
 import Header from "./components/Header";
 
 function App({ component }) {
   return (
-    <div className="main-div">
+    <div className="">
       <Header />
       {component}
     </div>

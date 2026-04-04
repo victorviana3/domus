@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Familia } from "./Familia";
 import { Link } from "react-router-dom";
-import "./Familias.css";
 
 export function Familias() {
   const [familias, setFamilias] = useState([]);
@@ -19,7 +18,9 @@ export function Familias() {
   return (
     <div className="div-familias">
       <Link to="/adicionar/familia">
-        <button>+ Adicionar Familia</button>
+        <button type="button" class="btn btn-primary">
+          Adicionar Família
+        </button>
       </Link>
       <input placeholder="Buscar Família"></input>
       <div className="div-boxes-familias">

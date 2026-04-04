@@ -1,4 +1,4 @@
-import "./Familia.css";
+// import "./Familia.css";
 
 export function Familia({ id, nome, endereco, especificidade }) {
   return (

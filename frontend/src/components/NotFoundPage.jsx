@@ -5,7 +5,7 @@ export function NotFoundPage() {
     <div>
       <p>Essa página não existe</p>
       <Link to={"/"}>
-        <button>Página Inicial</button>
+        <button className="btn btn-success">Página Inicial</button>
       </Link>
     </div>
   );

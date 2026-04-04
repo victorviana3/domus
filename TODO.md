@@ -1,28 +1,27 @@
 # TODO - Domus
 
 ## Backend
-
-- [ ] **Participação (Prioridade Alta)**
-  - [x] Criar rota `POST /participacao` para vincular pessoa a evento.
-  - [x] Criar rota `GET /eventos/:id/participantes` para listar quem foi em um evento.
-  - [x] Criar rota `DELETE /participacao` para remover uma presença.
-
-- [x] **Melhoria nas Consultas (Eager Loading)**
-  - [x] Atualizar `GET /familias` para incluir dados da `Especificidade`.
-  - [x] Atualizar `GET /pessoas` para incluir dados da `Familia`.
-  - [x] Atualizar `GET /eventos` para incluir o `TipoEvento`.
-
-- [x] **CRUD Completo**
-  - [x] Implementar rotas `GET /:entidade/:id` (Busca por ID) para Família, Pessoa e Evento.
-  - [x] Implementar rotas `PUT /:entidade/:id` (Atualização) para todas as entidades.
-  - [x] Implementar rotas `DELETE /:entidade/:id` para todas as entidades.
-
-- [x] **Refatoração & Qualidade**
-  - [x] Corrigir nome da chave estrangeira `familiumId` para `familiaId` no `POST /pessoa` e no modelo.
-  - [ ] Adicionar validações de integridade mais robustas nos controllers.
+- [ ] Implementar validações de integridade (ex: não permitir excluir família com pessoas vinculadas).
+- [ ] Criar filtros de busca por nome/data nas rotas de GET.
 
 ## Frontend
 
-- [ ] Criar tela de gerenciamento de Participações (Vincular pessoas a eventos).
-- [ ] Exibir detalhes das relações (ex: mostrar Família na lista de Pessoas).
-- [ ] Implementar botões de Editar e Excluir nas listagens.
+### Fase 1: Fluxo Principal de Dados (Core CRUD)
+*O sistema precisa permitir a entrada e visualização básica de dados para existir.*
+- [ ] **Finalizar Fluxo de Famílias:** Criar tela de adição e integrar os botões de Editar/Excluir (estilizados dentro do `.box-familia`).
+- [ ] **Listagem de Pessoas:** Implementar a tela básica para visualizar as pessoas cadastradas.
+- [ ] **Cadastro de Pessoas:** Criar tela de adição de pessoas, garantindo o vínculo correto com as Famílias existentes.
+
+### Fase 2: Usabilidade e Relacionamentos
+*Melhorando a experiência e a conexão entre os dados.*
+- [ ] **Busca:** Implementar a Search Bar na tela de Famílias para facilitar a localização de registros.
+- [ ] **Contexto Visual:** Exibir o nome da Família na listagem de Pessoas (detalhes da relação).
+- [ ] **Feedback do Usuário:** Adicionar estados de carregamento e mensagens de confirmação após salvar/deletar.
+
+### Fase 3: Funcionalidades de Pastoral (MVP)
+*Onde o sistema entrega seu valor social real.*
+- [ ] **Gerenciamento de Participações:** Criar interface para vincular pessoas a eventos específicos.
+
+### Fase 4: Refinamentos e Pós-MVP
+- [ ] Estilização avançada e responsividade fina.
+- [ ] Relatórios simples de participações por evento.
