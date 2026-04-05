@@ -6,8 +6,8 @@ import LogoPastoral from "../assets/pastoral-familiar-brasil-seeklogo.png";
 export default function Header() {
   return (
     <Navbar expand="sm" bg="light">
-      <img src={Logo} height="40px"></img>
       <Container className="mx-auto">
+        <img src={Logo} height="40px"></img>
         <Navbar.Brand>DOMUS</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -36,8 +36,8 @@ export default function Header() {
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
+        <img src={LogoPastoral} height="40px" />
       </Container>
-      <img src={LogoPastoral} height="40px" />
     </Navbar>
 
     // <div className="container-fluid">

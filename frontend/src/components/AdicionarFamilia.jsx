@@ -46,7 +46,7 @@ export function AdicionarFamilia() {
           required
         />
         <Form.Label className="mt-3">Especificidade Familiar</Form.Label>
-        <Form.Select name="especificidade">
+        <Form.Select name="especificidadeId">
           <option value="null">Nenhuma</option>
           {especificidades.map((especificidade) => {
             return (

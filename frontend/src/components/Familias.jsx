@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Familia } from "./Familia";
 import { Link } from "react-router-dom";
+import { Container } from "react-bootstrap";
 
 export function Familias() {
   const [familias, setFamilias] = useState([]);
@@ -12,18 +13,16 @@ export function Familias() {
   function searchFamilias() {
     fetch("http://localhost:3000/familias")
       .then((res) => res.json())
-      .then((data) => setFamilias(data));
+      .then((data) => {
+        setFamilias(data);
+        console.log(data);
+      });
   }
 
   return (
-    <div className="div-familias">
-      <Link to="/adicionar/familia">
-        <button type="button" class="btn btn-primary">
-          Adicionar Família
-        </button>
-      </Link>
-      <input placeholder="Buscar Família"></input>
-      <div className="div-boxes-familias">
+    <Container>
+      <input className="w-100 mb-2 mt-2" placeholder="Buscar Família"></input>
+      <Container className="d-flex flex-wrap">
         {familias.map((familia) => {
           return (
             <Familia
@@ -34,7 +33,7 @@ export function Familias() {
             />
           );
         })}
-      </div>
-    </div>
+      </Container>
+    </Container>
   );
 }
