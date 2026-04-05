@@ -1,9 +1,18 @@
 import { useState, useEffect } from "react";
-import { Form, FormControl, Button } from "react-bootstrap";
+import {
+  Form,
+  FormControl,
+  Button,
+  Container,
+  Row,
+  Col,
+  Modal,
+} from "react-bootstrap";
 
 export function AdicionarFamilia() {
   const [especificidadeId, setEspecificidadeId] = useState([]);
   const [especificidades, setEspecificidades] = useState([]);
+  const [showEspecificidadeModal, setShowEspecificidadeModal] = useState(false);
 
   useEffect(() => {
     getEspecificidade();
@@ -28,52 +37,110 @@ export function AdicionarFamilia() {
       body: JSON.stringify(data),
     }).then((res) => console.log(res));
   }
+
+  function ModalAdicionarEspecificidade(props) {
+    function adicionarEspecificidade(event) {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const formData = new FormData(form);
+
+      const data = Object.fromEntries(formData.entries());
+      console.log(JSON.stringify(data));
+
+      fetch("http://localhost:3000/especificidade", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      }).then((res) => console.log(res));
+    }
+    return (
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Adicionar Especificidade
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={adicionarEspecificidade}>
+            <Form.Group controld="formAdicionarEspecificidade">
+              <Form.Label>Qual a especificidade?</Form.Label>
+              <Form.Control
+                name="tipo"
+                type="text"
+                placeholder="Insira a especificidade"
+                required
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Cadastrar
+            </Button>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.onHide}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
   return (
-    <Form onSubmit={adicionarFamilia}>
-      <Form.Group controld="formAdicionarFamilia">
-        <Form.Label>Nome da Familia</Form.Label>
-        <Form.Control
-          name="nome"
-          type="text"
-          placeholder="Insira o nome da Família"
-          required
-        />
-        <Form.Label>Endereço</Form.Label>
-        <Form.Control
-          name="endereco"
-          type="text"
-          placeholder="Insira o endereço da familia"
-          required
-        />
-        <Form.Label className="mt-3">Especificidade Familiar</Form.Label>
-        <Form.Select name="especificidadeId">
-          <option value="null">Nenhuma</option>
-          {especificidades.map((especificidade) => {
-            return (
-              <option value={especificidade.id}>{especificidade.tipo}</option>
-            );
-          })}
-        </Form.Select>
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        Cadastrar
-      </Button>
-    </Form>
-    // <div>
-    //   <form action={adicionarFamilia}>
-    //     <input name="nome"></input>
-    //     <input name="endereco"></input>
-    //     <select
-    //       value={especificidadeId}
-    //       onChange={(e) => setEspecificidadeId(e.target.value)}
-    //     >
-    //   {especificidades.map((especificidade) => {
-    //     return (
-    //       <option value={especificidade.id}>{especificidade.tipo}</option>
-    //     );
-    //   })}
-    //     </select>
-    //   </form>
-    // </div>
+    <Container>
+      <Form onSubmit={adicionarFamilia}>
+        <Form.Group controld="formAdicionarFamilia">
+          <Form.Label>Nome da Familia</Form.Label>
+          <Form.Control
+            name="nome"
+            type="text"
+            placeholder="Insira o nome da Família"
+            required
+          />
+          <Form.Label>Endereço</Form.Label>
+          <Form.Control
+            name="endereco"
+            type="text"
+            placeholder="Insira o endereço da familia"
+            required
+          />
+          <Row className="d-flex">
+            <Col>
+              <Form.Label className="mt-3">Especificidade Familiar</Form.Label>
+              <Form.Select className="w-75" name="especificidadeId">
+                <option value="null">Nenhuma</option>
+                {especificidades.map((especificidade) => {
+                  return (
+                    <option value={especificidade.id}>
+                      {especificidade.tipo}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </Col>
+            <Col className="align-self-end">
+              <Button
+                variant="success"
+                onClick={() =>
+                  setShowEspecificidadeModal(!showEspecificidadeModal)
+                }
+              >
+                {" "}
+                +{" "}
+              </Button>
+            </Col>
+          </Row>
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Cadastrar
+        </Button>
+      </Form>
+      <ModalAdicionarEspecificidade
+        show={showEspecificidadeModal}
+        onHide={() => setShowEspecificidadeModal(false)}
+      />
+    </Container>
   );
 }
