@@ -2,6 +2,7 @@ import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import config from "../config";
+import { toast } from "react-toastify";
 
 export function Familia({
   id,
@@ -20,10 +21,12 @@ export function Familia({
         method: "DELETE",
       });
 
-      response.ok ? console.log("deletou") : console.log("não deletou");
+      response.ok
+        ? toast.success("Família Excluída com Sucesso")
+        : toast.error("não deletou");
       setCount(count + 1);
     } catch (error) {
-      console.log(error);
+      toast(error);
     } finally {
       setIsLoading(false);
     }
@@ -44,7 +47,11 @@ export function Familia({
         <Card.Text>
           <p>Pessoas</p>
           <p>Endereço: {endereco}</p>
-          <p>{especificidade?.tipo ? especificidade.tipo : ""}</p>
+          <p>
+            {especificidade?.tipo
+              ? `Especificidade: ${especificidade.tipo}`
+              : ""}
+          </p>
         </Card.Text>
         <Card.Footer className="d-flex justify-content-around">
           <Button variant="warning">Editar</Button>

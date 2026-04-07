@@ -11,7 +11,7 @@ export function Familias() {
 
   useEffect(() => {
     searchFamilias();
-  }, []);
+  }, [count]);
 
   function searchFamilias() {
     fetch(url + "/familias")
