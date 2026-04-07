@@ -9,16 +9,21 @@ import {
   Modal,
 } from "react-bootstrap";
 import config from "../config";
+import { toast } from "react-toastify";
 
 export function AdicionarFamilia() {
   const [especificidadeId, setEspecificidadeId] = useState([]);
   const [especificidades, setEspecificidades] = useState([]);
+  const [nome, setNome] = useState("");
+  const [endereco, setEndereco] = useState("");
   const [showEspecificidadeModal, setShowEspecificidadeModal] = useState(false);
   const apiUrl = config.apiUrl;
 
   useEffect(() => {
     getEspecificidade();
   }, []);
+
+  function handleChange(e) {}
 
   function getEspecificidade() {
     fetch(`${apiUrl}/especificidades`)
@@ -31,31 +36,42 @@ export function AdicionarFamilia() {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
     if (data.especificidadeId === "null") delete data.especificidadeId;
-    console.log(data);
-    console.log(JSON.stringify(data));
-
-    const res = await fetch(`${apiUrl}/familia`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    console.log(res);
+    try {
+      const res = await fetch(`${apiUrl}/familia`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      res.ok
+        ? toast.success("Família adicionada com sucesso")
+        : toast.error("Erro na criação no banco de dados");
+    } catch {
+      (error) => console.log(error);
+    }
   }
 
   function ModalAdicionarEspecificidade(props) {
-    function adicionarEspecificidade(event) {
+    async function adicionarEspecificidade(event) {
       event.preventDefault();
       const form = event.currentTarget;
       const formData = new FormData(form);
 
       const data = Object.fromEntries(formData.entries());
       console.log(JSON.stringify(data));
-
-      fetch(`${apiUrl}/especificidade`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      }).then((res) => console.log(res));
+      try {
+        const response = await fetch(`${apiUrl}/especificidade`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        response.ok
+          ? toast.success("Especificidade adicionada com sucesso")
+          : toast.error("Erro na adição da especificidade");
+      } catch {
+        (error) => console.log(error);
+      } finally {
+        setShowEspecificidadeModal(false);
+      }
     }
     return (
       <Modal
@@ -101,6 +117,8 @@ export function AdicionarFamilia() {
             name="nome"
             type="text"
             placeholder="Insira o nome da Família"
+            onChange={setNome}
+            value={nome}
             required
           />
           <Form.Label>Endereço</Form.Label>
@@ -108,6 +126,8 @@ export function AdicionarFamilia() {
             name="endereco"
             type="text"
             placeholder="Insira o endereço da familia"
+            onChange={setEndereco}
+            value={endereco}
             required
           />
           <Row className="d-flex">
