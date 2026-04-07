@@ -8,34 +8,38 @@ import {
   Col,
   Modal,
 } from "react-bootstrap";
+import config from "../config";
 
 export function AdicionarFamilia() {
   const [especificidadeId, setEspecificidadeId] = useState([]);
   const [especificidades, setEspecificidades] = useState([]);
   const [showEspecificidadeModal, setShowEspecificidadeModal] = useState(false);
+  const apiUrl = config.apiUrl;
 
   useEffect(() => {
     getEspecificidade();
   }, []);
 
   function getEspecificidade() {
-    fetch("http://localhost:3000/especificidades")
+    fetch(`${apiUrl}/especificidades`)
       .then((res) => res.json())
       .then((data) => setEspecificidades(data));
   }
-  function adicionarFamilia(event) {
+  async function adicionarFamilia(event) {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
-
     const data = Object.fromEntries(formData.entries());
+    if (data.especificidadeId === "null") delete data.especificidadeId;
+    console.log(data);
     console.log(JSON.stringify(data));
 
-    fetch("http://localhost:3000/familia", {
+    const res = await fetch(`${apiUrl}/familia`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
-    }).then((res) => console.log(res));
+    });
+    console.log(res);
   }
 
   function ModalAdicionarEspecificidade(props) {
@@ -47,7 +51,7 @@ export function AdicionarFamilia() {
       const data = Object.fromEntries(formData.entries());
       console.log(JSON.stringify(data));
 
-      fetch("http://localhost:3000/especificidade", {
+      fetch(`${apiUrl}/especificidade`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -127,8 +131,7 @@ export function AdicionarFamilia() {
                   setShowEspecificidadeModal(!showEspecificidadeModal)
                 }
               >
-                {" "}
-                +{" "}
+                +
               </Button>
             </Col>
           </Row>

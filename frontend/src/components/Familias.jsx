@@ -2,16 +2,19 @@ import { useState, useEffect } from "react";
 import { Familia } from "./Familia";
 import { Link } from "react-router-dom";
 import { Container } from "react-bootstrap";
+import config from "../config";
 
 export function Familias() {
   const [familias, setFamilias] = useState([]);
+  const [count, setCount] = useState(0);
+  const url = config.apiUrl;
 
   useEffect(() => {
     searchFamilias();
   }, []);
 
   function searchFamilias() {
-    fetch("http://localhost:3000/familias")
+    fetch(url + "/familias")
       .then((res) => res.json())
       .then((data) => {
         setFamilias(data);
@@ -30,6 +33,8 @@ export function Familias() {
               nome={familia.nome}
               endereco={familia.endereco}
               especificidade={familia.especificidade}
+              count={count}
+              setCount={setCount}
             />
           );
         })}
