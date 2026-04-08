@@ -14,8 +14,11 @@ import { toast } from "react-toastify";
 export function AdicionarFamilia() {
   const [especificidadeId, setEspecificidadeId] = useState([]);
   const [especificidades, setEspecificidades] = useState([]);
-  const [nome, setNome] = useState("");
-  const [endereco, setEndereco] = useState("");
+  const [formData, setFormData] = useState({
+    nome: "",
+    endereco: "",
+    especificidadeId: "",
+  });
   const [showEspecificidadeModal, setShowEspecificidadeModal] = useState(false);
   const apiUrl = config.apiUrl;
 
@@ -23,7 +26,9 @@ export function AdicionarFamilia() {
     getEspecificidade();
   }, []);
 
-  function handleChange(e) {}
+  function handleChange(e) {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }
 
   function getEspecificidade() {
     fetch(`${apiUrl}/especificidades`)
@@ -32,9 +37,7 @@ export function AdicionarFamilia() {
   }
   async function adicionarFamilia(event) {
     event.preventDefault();
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+    const data = formData;
     if (data.especificidadeId === "null") delete data.especificidadeId;
     try {
       const res = await fetch(`${apiUrl}/familia`, {
@@ -43,7 +46,12 @@ export function AdicionarFamilia() {
         body: JSON.stringify(data),
       });
       res.ok
-        ? toast.success("Família adicionada com sucesso")
+        ? (toast.success("Família adicionada com sucesso"),
+          setFormData({
+            nome: "",
+            endereco: "",
+            especificidadeId: null,
+          }))
         : toast.error("Erro na criação no banco de dados");
     } catch {
       (error) => console.log(error);
@@ -117,8 +125,8 @@ export function AdicionarFamilia() {
             name="nome"
             type="text"
             placeholder="Insira o nome da Família"
-            onChange={setNome}
-            value={nome}
+            onChange={handleChange}
+            value={formData.nome}
             required
           />
           <Form.Label>Endereço</Form.Label>
@@ -126,14 +134,19 @@ export function AdicionarFamilia() {
             name="endereco"
             type="text"
             placeholder="Insira o endereço da familia"
-            onChange={setEndereco}
-            value={endereco}
+            onChange={handleChange}
+            value={formData.endereco}
             required
           />
           <Row className="d-flex">
             <Col>
               <Form.Label className="mt-3">Especificidade Familiar</Form.Label>
-              <Form.Select className="w-75" name="especificidadeId">
+              <Form.Select
+                className="w-75"
+                name="especificidadeId"
+                value={formData.especificidadeId}
+                onChange={handleChange}
+              >
                 <option value="null">Nenhuma</option>
                 {especificidades.map((especificidade) => {
                   return (
