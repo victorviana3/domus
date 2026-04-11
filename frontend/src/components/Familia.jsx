@@ -45,13 +45,13 @@ export function Familia({
           <Card.Title>{nome}</Card.Title>
         </Link>
         <Card.Text>
-          <p>Pessoas</p>
-          <p>Endereço: {endereco}</p>
-          <p>
+          <Card.Text>Pessoas</Card.Text>
+          <Card.Text>Endereço: {endereco}</Card.Text>
+          <Card.Text>
             {especificidade?.tipo
               ? `Especificidade: ${especificidade.tipo}`
               : ""}
-          </p>
+          </Card.Text>
         </Card.Text>
         <Card.Footer className="d-flex justify-content-around">
           <Button variant="warning">Editar</Button>

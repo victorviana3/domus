@@ -30,11 +30,20 @@ export function AdicionarFamilia() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
-  function getEspecificidade() {
-    fetch(`${apiUrl}/especificidades`)
-      .then((res) => res.json())
-      .then((data) => setEspecificidades(data));
+  async function getEspecificidade() {
+    try {
+      const res = await fetch(`${apiUrl}/especificidades`);
+      if (res.ok) {
+        const data = await res.json();
+        setEspecificidades(data);
+      } else {
+        toast.error("Erro ao carregar as especificidades");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
+
   async function adicionarFamilia(event) {
     event.preventDefault();
     const data = formData;
@@ -45,19 +54,21 @@ export function AdicionarFamilia() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      res.ok
-        ? (toast.success("Família adicionada com sucesso"),
+      if (res.ok) {
+        (toast.success("Família adicionada com sucesso"),
           setFormData({
             nome: "",
             endereco: "",
             especificidadeId: null,
-          }))
-        : toast.error("Erro na criação no banco de dados");
+          }));
+        await getEspecificidade();
+      } else {
+        toast.error("Erro na criação no banco de dados");
+      }
     } catch {
       (error) => console.log(error);
     }
   }
-
   function ModalAdicionarEspecificidade(props) {
     async function adicionarEspecificidade(event) {
       event.preventDefault();
@@ -95,7 +106,7 @@ export function AdicionarFamilia() {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={adicionarEspecificidade}>
-            <Form.Group controld="formAdicionarEspecificidade">
+            <Form.Group controlId="formAdicionarEspecificidade">
               <Form.Label>Qual a especificidade?</Form.Label>
               <Form.Control
                 name="tipo"
@@ -119,7 +130,7 @@ export function AdicionarFamilia() {
   return (
     <Container>
       <Form onSubmit={adicionarFamilia}>
-        <Form.Group controld="formAdicionarFamilia">
+        <Form.Group controlId="formAdicionarFamilia">
           <Form.Label>Nome da Familia</Form.Label>
           <Form.Control
             name="nome"
@@ -150,7 +161,7 @@ export function AdicionarFamilia() {
                 <option value="null">Nenhuma</option>
                 {especificidades.map((especificidade) => {
                   return (
-                    <option value={especificidade.id}>
+                    <option key={especificidade.id} value={especificidade.id}>
                       {especificidade.tipo}
                     </option>
                   );
